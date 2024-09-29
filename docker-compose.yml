@@ -1,0 +1,23 @@
+services:
+  pruebatecnica.apiview:
+    image: ${DOCKER_REGISTRY-}pruebatecnicaapiview
+    container_name: prueba_tecnica_CLA
+    build:
+      context: .
+      dockerfile: PruebaTecnica.ApiView/Dockerfile
+    depends_on:
+      - PTDb
+    environment:
+        CadenaPostgre: Host=PTDb;Database=ejercicio_tecnico_backend;Port=5432;Username=postgres;Password=newpassword
+    
+  PTDb:
+    image: postgres:latest
+    container_name: prueba_tecnica_Db
+    environment:
+    - POSTGRES_DB=ejercicio_tecnico_backend
+    - POSTGRES_USER=postgres
+    - POSTGRES_PASSWORD=newpassword
+    volumes:
+    - ./.containers/database:/var/lib/postgresql/data
+    ports:
+    - 5432:5432
