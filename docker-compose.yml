@@ -8,16 +8,26 @@ services:
     depends_on:
       - PTDb
     environment:
-        CadenaPostgre: Host=PTDb;Database=ejercicio_tecnico_backend;Port=5432;Username=postgres;Password=newpassword
-    
+      CadenaPostgre: "Host=PTDb;Database=ejercicio_tecnico_backend;Port=5432;Username=postgres;Password=newpassword"
+    ports:
+      - "8080:80" 
+    networks:
+      - prueba_tecnica_network
+
   PTDb:
-    image: postgres:latest
+    image: postgres:16
     container_name: prueba_tecnica_Db
     environment:
-    - POSTGRES_DB=ejercicio_tecnico_backend
-    - POSTGRES_USER=postgres
-    - POSTGRES_PASSWORD=newpassword
+      - POSTGRES_DB=ejercicio_tecnico_backend
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=newpassword
     volumes:
-    - ./.containers/database:/var/lib/postgresql/data
+      - ./.containers/database:/var/lib/postgresql/data
     ports:
-    - 5432:5432
+      - "5432:5432"
+    networks:
+      - prueba_tecnica_network
+
+networks:
+  prueba_tecnica_network:
+    driver: bridge
